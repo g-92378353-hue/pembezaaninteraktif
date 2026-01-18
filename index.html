@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalkulus Pembezaan - UMT 2122</title>
+    <title>Kalkulus Pembezaan - UMT 2122 (Versi Mobile)</title>
     <!-- MathJax untuk paparan formula matematik yang cantik -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -20,33 +20,134 @@
         }
 
         * { box-sizing: border-box; }
+        
+        html { scroll-behavior: smooth; }
+
         body {
             margin: 0;
             background-color: var(--bg-dark);
             color: var(--text-main);
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             overflow-x: hidden;
+            line-height: 1.5;
         }
 
-        /* Struktur Slaid */
+        /* Struktur Slaid - Responsif */
         .slide-deck {
             scroll-snap-type: y mandatory;
             overflow-y: scroll;
             height: 100vh;
+            width: 100%;
         }
 
         .slide {
-            height: 100vh;
-            width: 100vw;
+            min-height: 100vh;
+            width: 100%;
             scroll-snap-align: start;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 40px;
+            padding: 20px;
             position: relative;
             border-bottom: 2px solid #334155;
+            overflow-y: auto; /* Membenarkan skrol dalam slaid jika kandungan panjang di mobile */
         }
+
+        /* Tipografi Responsif */
+        h1 { font-size: 2.5rem; color: var(--primary); margin: 0; text-transform: uppercase; letter-spacing: 2px; text-align: center; line-height: 1.1; }
+        h2 { font-size: 1.5rem; color: var(--secondary); margin-bottom: 15px; border-bottom: 3px solid var(--primary); padding-bottom: 8px; width: 100%; max-width: 900px; }
+        p { font-size: 1rem; color: var(--text-dim); }
+
+        @media (min-width: 768px) {
+            h1 { font-size: 4rem; }
+            h2 { font-size: 2.5rem; }
+            p { font-size: 1.2rem; }
+            .slide { padding: 40px; }
+        }
+
+        /* Komponen */
+        .content-box {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            width: 100%;
+            max-width: 1000px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            border: 1px solid #334155;
+            margin: 10px 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Satu lajur untuk mobile */
+            gap: 15px;
+            width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+            .content-box { padding: 30px; border-radius: 20px; }
+        }
+
+        .exercise-card {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .ans-tag {
+            background: var(--accent);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        .formula-display {
+            background: #000;
+            padding: 12px;
+            border-radius: 10px;
+            margin: 10px 0;
+            text-align: center;
+            border: 1px solid var(--primary);
+            overflow-x: auto; /* Skrol formula panjang di mobile */
+        }
+
+        /* Navigasi Butang */
+        .nav-hint {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            animation: bounce 2s infinite;
+            text-align: center;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0) translateX(-50%);}
+            40% {transform: translateY(-8px) translateX(-50%);}
+            60% {transform: translateY(-4px) translateX(-50%);}
+        }
+
+        /* Jadual Responsif */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+
+        table { width: 100%; border-collapse: collapse; min-width: 400px; }
+        th { background: var(--primary); color: var(--bg-dark); padding: 8px; text-align: left; font-size: 0.9rem; }
+        td { padding: 10px; border-bottom: 1px solid #334155; font-size: 0.9rem; }
+
+        .steps { color: var(--accent); font-weight: bold; margin-top: 8px; font-size: 0.9rem; }
 
         /* Hiasan Latar Belakang */
         .slide::before {
@@ -56,78 +157,6 @@
             background: radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.05) 0%, transparent 50%);
             z-index: -1;
         }
-
-        /* Tipografi */
-        h1 { font-size: 4rem; color: var(--primary); margin: 0; text-transform: uppercase; letter-spacing: 4px; text-align: center; }
-        h2 { font-size: 2.5rem; color: var(--secondary); margin-bottom: 20px; border-bottom: 3px solid var(--primary); padding-bottom: 10px; width: 100%; max-width: 900px; }
-        p { font-size: 1.2rem; color: var(--text-dim); }
-
-        /* Komponen */
-        .content-box {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 30px;
-            width: 100%;
-            max-width: 1000px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
-            border: 1px solid #334155;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            width: 100%;
-        }
-
-        .exercise-card {
-            background: rgba(15, 23, 42, 0.5);
-            padding: 20px;
-            border-radius: 12px;
-            border-left: 5px solid var(--primary);
-        }
-
-        .ans-tag {
-            background: var(--accent);
-            color: #fff;
-            padding: 4px 12px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-            display: inline-block;
-        }
-
-        .formula-display {
-            background: #000;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 10px 0;
-            text-align: center;
-            border: 1px solid var(--primary);
-        }
-
-        /* Navigasi Butang */
-        .nav-hint {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: var(--text-dim);
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0) translateX(-50%);}
-            40% {transform: translateY(-10px) translateX(-50%);}
-            60% {transform: translateY(-5px) translateX(-50%);}
-        }
-
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th { background: var(--primary); color: var(--bg-dark); padding: 10px; text-align: left; }
-        td { padding: 12px; border-bottom: 1px solid #334155; }
-
-        .steps { color: var(--accent); font-weight: bold; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -136,43 +165,45 @@
 
     <!-- SLIDE 1: MUKA DEPAN -->
     <section class="slide">
-        <p style="letter-spacing: 8px; font-weight: bold; color: var(--primary);">UMT 2122</p>
+        <p style="letter-spacing: 4px; font-weight: bold; color: var(--primary); margin-bottom: 5px;">UMT 2122</p>
         <h1>KALKULUS<br><span style="color: #fff;">PEMBEZAAN</span></h1>
-        <div class="content-box" style="margin-top: 40px; text-align: center;">
-            <p>Jawapan Lengkap Latihan Nota (M.S. 7 - Tamat)</p>
-            <p style="font-size: 0.9rem;">Gunakan Skrol atau Kekunci Anak Panah</p>
+        <div class="content-box" style="margin-top: 25px; text-align: center;">
+            <p style="font-size: 1rem;">Jawapan Lengkap Latihan Nota (M.S. 7 - Tamat)</p>
+            <p style="font-size: 0.8rem; margin-top: 10px;">Gunakan Skrol atau Swip ke Bawah</p>
         </div>
-        <div class="nav-hint"><i class="fas fa-chevron-down"></i> SKROL KE BAWAH</div>
+        <div class="nav-hint"><i class="fas fa-chevron-down"></i> SKROL</div>
     </section>
 
     <!-- SLIDE 2: PETUA ASAS (1.1.1) -->
     <section class="slide">
-        <h2>1.1.1: Petua Asas Pembezaan</h2>
+        <h2>1.1.1: Petua Asas</h2>
         <div class="content-box">
             <div class="formula-display">
                 \[ \frac{d}{dx}(ax^n) = anx^{n-1} \]
             </div>
-            <table>
-                <tr><th>Soalan (y)</th><th>Jawapan (\( \frac{dy}{dx} \))</th></tr>
-                <tr><td>\( x^5 \)</td><td><span class="ans-tag">JAWAPAN</span> \( 5x^4 \)</td></tr>
-                <tr><td>\( -6x^3 \)</td><td><span class="ans-tag">JAWAPAN</span> \( -18x^2 \)</td></tr>
-                <tr><td>\( -12x^6 \)</td><td><span class="ans-tag">JAWAPAN</span> \( -72x^5 \)</td></tr>
-                <tr><td>\( 10 \)</td><td><span class="ans-tag">JAWAPAN</span> \( 0 \) (Pemalar)</td></tr>
-                <tr><td>\( 7x \)</td><td><span class="ans-tag">JAWAPAN</span> \( 7 \)</td></tr>
-            </table>
+            <div class="table-container">
+                <table>
+                    <tr><th>Soalan (y)</th><th>Jawapan (\( \frac{dy}{dx} \))</th></tr>
+                    <tr><td>\( x^5 \)</td><td><span class="ans-tag">JAWAPAN</span> \( 5x^4 \)</td></tr>
+                    <tr><td>\( -6x^3 \)</td><td><span class="ans-tag">JAWAPAN</span> \( -18x^2 \)</td></tr>
+                    <tr><td>\( -12x^6 \)</td><td><span class="ans-tag">JAWAPAN</span> \( -72x^5 \)</td></tr>
+                    <tr><td>\( 10 \)</td><td><span class="ans-tag">JAWAPAN</span> 0</td></tr>
+                    <tr><td>\( 7x \)</td><td><span class="ans-tag">JAWAPAN</span> 7</td></tr>
+                </table>
+            </div>
         </div>
     </section>
 
     <!-- SLIDE 3: NILAI TERBITAN (1.1.2) -->
     <section class="slide">
-        <h2>1.1.2: Nilai Terbitan Pertama</h2>
+        <h2>1.1.2: Nilai Terbitan</h2>
         <div class="grid" style="max-width: 1000px;">
             <div class="exercise-card">
                 <h3>Soalan (b)</h3>
                 <p>\( y = -3p^5 \) pada \( p = 2 \)</p>
                 <div class="steps">
-                    1. Bezakan: \( \frac{dy}{dp} = -15p^4 \)<br>
-                    2. Ganti p=2: \( -15(2^4) = -15(16) \)
+                    \[ \frac{dy}{dp} = -15p^4 \]
+                    \[ \text{Nilai: } -15(2^4) = -240 \]
                 </div>
                 <p class="ans-tag" style="margin-top:10px;">AKHIR: -240</p>
             </div>
@@ -180,8 +211,8 @@
                 <h3>Soalan (f)</h3>
                 <p>\( y = 7x^3 \) pada \( x = 2 \)</p>
                 <div class="steps">
-                    1. Bezakan: \( \frac{dy}{dx} = 21x^2 \)<br>
-                    2. Ganti x=2: \( 21(2^2) = 21(4) \)
+                    \[ \frac{dy}{dx} = 21x^2 \]
+                    \[ \text{Nilai: } 21(2^2) = 84 \]
                 </div>
                 <p class="ans-tag" style="margin-top:10px;">AKHIR: 84</p>
             </div>
@@ -190,16 +221,15 @@
 
     <!-- SLIDE 4: HASIL DARAB (1.1.4) -->
     <section class="slide">
-        <h2>1.1.4: Petua Hasil Darab (uv)</h2>
+        <h2>1.1.4: Hasil Darab (uv)</h2>
         <div class="content-box">
-            <p>Formula: \( \frac{dy}{dx} = u\frac{dv}{dx} + v\frac{du}{dx} \)</p>
+            <p>Formula: \( u v' + v u' \)</p>
             <div class="exercise-card" style="border-left-color: var(--secondary);">
                 <h3>Latihan (b): \( y = (2x-3)(x+4) \)</h3>
                 <div class="steps">
-                    Let \( u = 2x-3 \implies u' = 2 \)<br>
-                    Let \( v = x+4 \implies v' = 1 \)<br>
+                    \( u = 2x-3 \implies u' = 2 \)<br>
+                    \( v = x+4 \implies v' = 1 \)<br>
                     \[ \frac{dy}{dx} = (2x-3)(1) + (x+4)(2) \]
-                    \[ = 2x - 3 + 2x + 8 \]
                 </div>
                 <span class="ans-tag">JAWAPAN: 4x + 5</span>
             </div>
@@ -208,9 +238,11 @@
 
     <!-- SLIDE 5: HASIL BAHAGI (1.1.5) -->
     <section class="slide">
-        <h2>1.1.5: Petua Hasil Bahagi (u/v)</h2>
+        <h2>1.1.5: Hasil Bahagi (u/v)</h2>
         <div class="content-box">
-            <p>Formula: \( \frac{dy}{dx} = \frac{v u' - u v'}{v^2} \)</p>
+            <div class="formula-display">
+                \[ \frac{dy}{dx} = \frac{v u' - u v'}{v^2} \]
+            </div>
             <div class="exercise-card" style="border-left-color: var(--accent);">
                 <h3>Latihan (a): \( y = \frac{x+3}{x-2} \)</h3>
                 <div class="steps">
@@ -224,70 +256,64 @@
 
     <!-- SLIDE 6: PETUA RANTAI (1.1.6) -->
     <section class="slide">
-        <h2>1.1.6: Petua Rantai (Chain Rule)</h2>
-        <div class="grid" style="max-width: 1000px;">
+        <h2>1.1.6: Petua Rantai</h2>
+        <div class="grid">
             <div class="exercise-card">
                 <h3>(a) \( y = (x+2)^5 \)</h3>
-                <div class="steps">
-                    Bawa kuasa ke depan, tolak satu kuasa, bezakan dalam.<br>
-                    \( \frac{dy}{dx} = 5(x+2)^4 \cdot (1) \)
-                </div>
+                <div class="steps">\( \frac{dy}{dx} = 5(x+2)^4 \cdot (1) \)</div>
                 <span class="ans-tag">JAWAPAN: \( 5(x+2)^4 \)</span>
             </div>
             <div class="exercise-card">
                 <h3>(b) \( y = (2x-1)^{-6} \)</h3>
-                <div class="steps">
-                    \( \frac{dy}{dx} = -6(2x-1)^{-7} \cdot (2) \)
-                </div>
+                <div class="steps">\( \frac{dy}{dx} = -6(2x-1)^{-7} \cdot (2) \)</div>
                 <span class="ans-tag">JAWAPAN: \( -12(2x-1)^{-7} \)</span>
             </div>
         </div>
     </section>
 
-    <!-- SLIDE 7: TERBITAN KEDUA & TITIK PUSINGAN (1.2.2) -->
+    <!-- SLIDE 7: TITIK PUSINGAN (1.2.2) -->
     <section class="slide">
-        <h2>1.2.2: Titik Pusingan & Sifat</h2>
+        <h2>1.2.2: Titik Pusingan</h2>
         <div class="content-box">
             <h3>Soalan (c): \( y = x^2 - 4x + 2 \)</h3>
-            <div class="steps">
-                1. Cari \( \frac{dy}{dx} = 2x - 4 \). Samakan 0 &rarr; \( x=2 \)<br>
-                2. Ganti \( x=2 \) ke \( y \): \( (2)^2 - 4(2) + 2 = -2 \). Titik: (2, -2)<br>
-                3. Terbitan ke-2: \( \frac{d^2y}{dx^2} = 2 \)<br>
-                4. Oleh sebab \( 2 > 0 \), ia adalah titik <strong>MINIMUM</strong>.
+            <div class="steps" style="font-size: 0.85rem;">
+                1. \( \frac{dy}{dx} = 2x - 4 = 0 \implies x=2 \)<br>
+                2. Ganti \( x=2 \): \( y = (2)^2 - 4(2) + 2 = -2 \)<br>
+                3. \( \frac{d^2y}{dx^2} = 2 \) (Positif = Minimum)
             </div>
-            <span class="ans-tag">KESIMPULAN: (2, -2) Titik Minimum</span>
+            <div style="margin-top: 10px;">
+                <span class="ans-tag">TITIK MINIMUM: (2, -2)</span>
+            </div>
         </div>
     </section>
 
     <!-- SLIDE 8: TRIGONOMETRI (1.3.1) -->
     <section class="slide">
-        <h2>1.3.1: Pembezaan Trigonometri</h2>
-        <div class="content-box">
-            <div class="grid">
-                <div class="exercise-card">
-                    <p>Bezakan: \( y = 3 \sin 5x \)</p>
-                    <span class="ans-tag">JAWAPAN: \( 15 \cos 5x \)</span>
-                </div>
-                <div class="exercise-card">
-                    <p>Bezakan: \( y = \cos 4x \)</p>
-                    <span class="ans-tag">JAWAPAN: \( -4 \sin 4x \)</span>
-                </div>
-                <div class="exercise-card">
-                    <p>Bezakan: \( y = 2 \tan 3x \)</p>
-                    <span class="ans-tag">JAWAPAN: \( 6 \sec^2 3x \)</span>
-                </div>
+        <h2>1.3.1: Trigonometri</h2>
+        <div class="grid">
+            <div class="exercise-card">
+                <p>Bezakan: \( 3 \sin 5x \)</p>
+                <span class="ans-tag">JAWAPAN: \( 15 \cos 5x \)</span>
+            </div>
+            <div class="exercise-card">
+                <p>Bezakan: \( \cos 4x \)</p>
+                <span class="ans-tag">JAWAPAN: \( -4 \sin 4x \)</span>
+            </div>
+            <div class="exercise-card">
+                <p>Bezakan: \( 2 \tan 3x \)</p>
+                <span class="ans-tag">JAWAPAN: \( 6 \sec^2 3x \)</span>
             </div>
         </div>
     </section>
 
     <!-- SLIDE 9: PENUTUP -->
     <section class="slide">
-        <h1>TAMAT SESI</h1>
-        <p>Semoga Berjaya dalam Ujian Kalkulus!</p>
-        <div style="margin-top: 50px;">
-            <i class="fas fa-graduation-cap fa-4x" style="color: var(--primary);"></i>
+        <h1 style="font-size: 2rem;">TAMAT SESI</h1>
+        <div style="margin: 30px 0;">
+            <i class="fas fa-graduation-cap fa-3x" style="color: var(--primary);"></i>
         </div>
-        <p style="margin-top: 20px;">Kolej Vokasional Kajang</p>
+        <p style="text-align: center;">Semua jawapan sedia untuk rujukan anda.</p>
+        <p style="font-size: 0.8rem; margin-top: 20px;">Kolej Vokasional Kajang</p>
     </section>
 
 </div>
